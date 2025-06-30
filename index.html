@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inversiones Bambú - Sistema de Gestión</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>INVERSIONES BAMBÚ</h1>
+            <div class="currency-selector">
+                <select id="currency-select">
+                    <option value="COP">Pesos Colombianos (COP)</option>
+                    <option value="USD">Dólares (USD)</option>
+                    <option value="VES">Bolívares (VES)</option>
+                </select>
+                <div class="exchange-rate">
+                    <span id="current-rate">Tasa: 1 USD = 4000 COP</span>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#dashboard" class="active">Inicio</a></li>
+                <li><a href="#employees">Empleados</a></li>
+                <li><a href="#production">Producción</a></li>
+                <li><a href="#payments">Pagos</a></li>
+                <li><a href="#inventory">Inventario</a></li>
+                <li><a href="#material-calc">Cálculo de Material</a></li>
+                <li><a href="#categories">Categorías y Precios</a></li>
+                <li><a href="#reports">Reportes</a></li>
+                <li><a href="#settings">Configuración</a></li>
+            </ul>
+        </nav>
+
+        <div class="search-container">
+            <input type="text" id="global-search" placeholder="Buscar empleados, modelos, materiales...">
+            <button id="search-btn">Buscar</button>
+        </div>
+
+        <main>
+            <!-- Sección Dashboard -->
+            <section id="dashboard" class="content-section active">
+                <h2>Panel de Control</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>Producción Hoy</h3>
+                        <p id="today-production">0 pares</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pagos Semanales</h3>
+                        <p id="weekly-payments">$0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Inventario</h3>
+                        <p id="inventory-status">0 materiales</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Empleados -->
+            <section id="employees" class="content-section">
+                <h2>Gestión de Empleados</h2>
+                <div class="section-controls">
+                    <button id="add-employee-btn">Agregar Empleado</button>
+                </div>
+                <div class="table-container">
+                    <table id="employees-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Cédula</th>
+                                <th>Área</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sección Producción -->
+            <section id="production" class="content-section">
+                <h2>Registro de Producción</h2>
+                <div class="production-controls">
+                    <div class="form-group">
+                        <label for="production-date">Fecha:</label>
+                        <input type="date" id="production-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="production-employee">Empleado:</label>
+                        <select id="production-employee"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="production-model">Modelo:</label>
+                        <select id="production-model"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="production-area">Área:</label>
+                        <select id="production-area"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="production-quantity">Cantidad:</label>
+                        <input type="number" id="production-quantity" min="1">
+                    </div>
+                    <button id="save-production-btn">Guardar Producción</button>
+                </div>
+                <div class="table-container">
+                    <table id="production-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Empleado</th>
+                                <th>Modelo</th>
+                                <th>Área</th>
+                                <th>Cantidad</th>
+                                <th>Valor</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sección Pagos -->
+            <section id="payments" class="content-section">
+                <h2>Pagos a Empleados</h2>
+                <div class="payment-filters">
+                    <div class="form-group">
+                        <label for="payment-period">Filtrar por:</label>
+                        <select id="payment-period">
+                            <option value="today">Hoy</option>
+                            <option value="week">Esta Semana</option>
+                            <option value="month">Este Mes</option>
+                            <option value="year">Este Año</option>
+                            <option value="all">Todos</option>
+                            <option value="custom">Personalizado</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="payment-custom-range" style="display: none;">
+                        <label for="payment-start-date">Desde:</label>
+                        <input type="date" id="payment-start-date">
+                        <label for="payment-end-date">Hasta:</label>
+                        <input type="date" id="payment-end-date">
+                    </div>
+                    <button id="calculate-payments-btn">Calcular Pagos</button>
+                    <button id="refresh-payments-btn">Actualizar</button>
+                </div>
+                <div class="table-container">
+                    <table id="payments-table">
+                        <thead>
+                            <tr>
+                                <th>Empleado</th>
+                                <th>Periodo</th>
+                                <th>Total Producción</th>
+                                <th>Total a Pagar</th>
+                                <th>Estado</th>
+                                <th>Fecha de Pago</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sección Inventario -->
+            <section id="inventory" class="content-section">
+                <h2>Gestión de Inventario</h2>
+                <div class="section-controls">
+                    <button id="add-material-btn">Agregar Material</button>
+                </div>
+                <div class="table-container">
+                    <table id="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Material</th>
+                                <th>Tipo</th>
+                                <th>Cantidad</th>
+                                <th>Unidad</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sección Cálculo de Material -->
+            <section id="material-calc" class="content-section">
+                <h2>Cálculo de Material por Corte</h2>
+                <div class="calc-controls">
+                    <div class="form-group">
+                        <label for="calc-model">Modelo:</label>
+                        <select id="calc-model"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="calc-material">Material:</label>
+                        <select id="calc-material"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="calc-pairs">Pares a producir:</label>
+                        <input type="number" id="calc-pairs" min="1" value="1">
+                    </div>
+                    <button id="calculate-material-btn">Calcular</button>
+                </div>
+                <div class="calc-results">
+                    <h3>Resultados de Cálculos</h3>
+                    <div id="calc-results-container"></div>
+                </div>
+                <div class="material-measures">
+                    <h3>Registrar Nueva Medida</h3>
+                    <div class="form-group">
+                        <label for="new-measure-model">Modelo:</label>
+                        <select id="new-measure-model"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-measure-material">Material:</label>
+                        <select id="new-measure-material"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-measure-amount">Cantidad por par:</label>
+                        <input type="number" id="new-measure-amount" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-measure-unit">Unidad:</label>
+                        <select id="new-measure-unit">
+                            <option value="metros">Metros</option>
+                            <option value="centimetros">Centímetros</option>
+                            <option value="pulgadas">Pulgadas</option>
+                            <option value="gramos">Gramos</option>
+                            <option value="unidades">Unidades</option>
+                            <option value="litros">Litros</option>
+                        </select>
+                    </div>
+                    <button id="save-measure-btn">Guardar Medida</button>
+                    <div id="measures-list-container"></div>
+                </div>
+            </section>
+
+            <!-- Sección Categorías y Precios -->
+            <section id="categories" class="content-section">
+                <h2>Categorías y Precios por Área</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="cutting">Cortada</button>
+                    <button class="tab-btn" data-tab="sewing">Costura</button>
+                    <button class="tab-btn" data-tab="painting">Pintada</button>
+                </div>
+                <div class="tab-content active" id="cutting-tab">
+                    <div class="section-controls">
+                        <button id="add-cutting-price-btn">Agregar Precio</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="cutting-prices-table">
+                            <thead>
+                                <tr>
+                                    <th>Modelo</th>
+                                    <th>Precio (COP)</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-content" id="sewing-tab">
+                    <div class="section-controls">
+                        <button id="add-sewing-price-btn">Agregar Precio</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="sewing-prices-table">
+                            <thead>
+                                <tr>
+                                    <th>Modelo</th>
+                                    <th>Precio (COP)</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-content" id="painting-tab">
+                    <div class="section-controls">
+                        <button id="add-painting-price-btn">Agregar Precio</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="painting-prices-table">
+                            <thead>
+                                <tr>
+                                    <th>Modelo</th>
+                                    <th>Variante</th>
+                                    <th>Precio (COP)</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Reportes -->
+            <section id="reports" class="content-section">
+                <h2>Reportes y Estadísticas</h2>
+                <div class="report-filters">
+                    <div class="form-group">
+                        <label for="report-type">Tipo de Reporte:</label>
+                        <select id="report-type">
+                            <option value="production">Producción</option>
+                            <option value="payments">Pagos</option>
+                            <option value="inventory">Inventario</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="report-period">Periodo:</label>
+                        <select id="report-period">
+                            <option value="daily">Diario</option>
+                            <option value="weekly">Semanal</option>
+                            <option value="monthly">Mensual</option>
+                            <option value="yearly">Anual</option>
+                            <option value="custom">Personalizado</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="report-custom-range" style="display: none;">
+                        <label for="report-start-date">Desde:</label>
+                        <input type="date" id="report-start-date">
+                        <label for="report-end-date">Hasta:</label>
+                        <input type="date" id="report-end-date">
+                    </div>
+                    <button id="generate-report-btn">Generar Reporte</button>
+                    <button id="export-report-btn">Exportar a Excel</button>
+                </div>
+                <div class="report-results">
+                    <div id="report-chart"></div>
+                    <div class="table-container">
+                        <table id="report-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Modelo</th>
+                                    <th>Total Producción</th>
+                                    <th>Total Pagos</th>
+                                    <th>Áreas</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Configuración -->
+            <section id="settings" class="content-section">
+                <h2>Configuración del Sistema</h2>
+                <div class="settings-tabs">
+                    <div class="settings-tab">
+                        <h3>Tasas de Cambio</h3>
+                        <div class="form-group">
+                            <label for="usd-rate">1 USD = </label>
+                            <input type="number" id="usd-rate" step="0.01" min="0.01" value="4000"> COP
+                        </div>
+                        <div class="form-group">
+                            <label for="ves-rate">1 USD = </label>
+                            <input type="number" id="ves-rate" step="0.01" min="0.01" value="36"> VES
+                        </div>
+                        <button id="save-rates-btn">Guardar Tasas</button>
+                    </div>
+                    <div class="settings-tab">
+                        <h3>Respaldo de Datos</h3>
+                        <button id="export-data-btn">Exportar Todos los Datos</button>
+                        <div class="form-group">
+                            <label for="import-data">Importar Datos:</label>
+                            <input type="file" id="import-data" accept=".json">
+                        </div>
+                        <button id="import-data-btn">Importar</button>
+                    </div>
+                    <div class="settings-tab">
+                        <h3>Configuración General</h3>
+                        <div class="form-group">
+                            <label for="default-currency">Moneda Predeterminada:</label>
+                            <select id="default-currency">
+                                <option value="COP" selected>Pesos Colombianos (COP)</option>
+                                <option value="USD">Dólares (USD)</option>
+                                <option value="VES">Bolívares (VES)</option>
+                            </select>
+                        </div>
+                        <button id="save-settings-btn">Guardar Configuración</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modales -->
+        <div id="employee-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="employee-modal-title">Agregar Nuevo Empleado</h2>
+                <form id="employee-form">
+                    <input type="hidden" id="employee-id">
+                    <div class="form-group">
+                        <label for="employee-name">Nombre Completo:</label>
+                        <input type="text" id="employee-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employee-id-number">Cédula:</label>
+                        <input type="text" id="employee-id-number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employee-area">Área de Producción:</label>
+                        <select id="employee-area" required>
+                            <option value="cutting">Cortada</option>
+                            <option value="sewing">Costura</option>
+                            <option value="painting">Pintada</option>
+                            <option value="assembly">Armado</option>
+                            <option value="quality">Control de Calidad</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="employee-start-date">Fecha de Ingreso:</label>
+                        <input type="date" id="employee-start-date" required>
+                    </div>
+                    <button type="submit" id="save-employee-btn">Guardar</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="material-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="material-modal-title">Agregar Nuevo Material</h2>
+                <form id="material-form">
+                    <input type="hidden" id="material-id">
+                    <div class="form-group">
+                        <label for="material-name">Nombre del Material:</label>
+                        <input type="text" id="material-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="material-type">Tipo de Material:</label>
+                        <select id="material-type" required>
+                            <option value="cuero">Cuero</option>
+                            <option value="suela">Suela</option>
+                            <option value="hilo">Hilo</option>
+                            <option value="adhesivo">Adhesivo</option>
+                            <option value="tela">Tela</option>
+                            <option value="forro">Forro</option>
+                            <option value="tintas">Tintas</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="material-quantity">Cantidad Inicial:</label>
+                        <input type="number" id="material-quantity" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="material-unit">Unidad de Medida:</label>
+                        <select id="material-unit" required>
+                            <option value="metros">Metros</option>
+                            <option value="centimetros">Centímetros</option>
+                            <option value="pulgadas">Pulgadas</option>
+                            <option value="gramos">Gramos</option>
+                            <option value="unidades">Unidades</option>
+                            <option value="litros">Litros</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="save-material-btn">Guardar</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="price-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="price-modal-title">Agregar Nuevo Precio</h2>
+                <form id="price-form">
+                    <input type="hidden" id="price-id">
+                    <input type="hidden" id="price-area">
+                    <div class="form-group">
+                        <label for="price-model">Modelo:</label>
+                        <select id="price-model" required></select>
+                    </div>
+                    <div class="form-group" id="price-variant-container" style="display: none;">
+                        <label for="price-variant">Variante:</label>
+                        <input type="text" id="price-variant" placeholder="Ej: 2 colores">
+                    </div>
+                    <div class="form-group">
+                        <label for="price-amount">Precio (COP):</label>
+                        <input type="number" id="price-amount" step="0.01" min="0" required>
+                    </div>
+                    <button type="submit" id="save-price-btn">Guardar</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="payment-details-modal" class="modal">
+            <div class="modal-content large">
+                <span class="close-btn">&times;</span>
+                <h2>Detalles de Pago</h2>
+                <div class="payment-info">
+                    <p><strong>Empleado:</strong> <span id="payment-employee-name"></span></p>
+                    <p><strong>Periodo:</strong> <span id="payment-period-details"></span></p>
+                    <p><strong>Total a Pagar:</strong> <span id="payment-total-amount"></span></p>
+                </div>
+                <div class="table-container">
+                    <table id="payment-details-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Modelo</th>
+                                <th>Área</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="payment-actions">
+                    <button id="print-payment-btn">Generar Ticket</button>
+                    <button id="mark-paid-btn">Marcar como Pagado</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="payment-ticket-modal" class="modal">
+            <div class="modal-content large">
+                <span class="close-btn">&times;</span>
+                <div id="ticket-content"></div>
+            </div>
+        </div>
+
+        <div id="confirmation-modal" class="modal">
+            <div class="modal-content small">
+                <h2 id="confirmation-title">Confirmar Acción</h2>
+                <p id="confirmation-message">¿Está seguro que desea realizar esta acción?</p>
+                <div class="confirmation-buttons">
+                    <button id="confirm-yes">Sí</button>
+                    <button id="confirm-no">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="db.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

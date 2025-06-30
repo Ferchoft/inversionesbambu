@@ -1,0 +1,489 @@
+/* Estilos generales */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.5rem;
+}
+
+.currency-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.currency-selector select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: none;
+}
+
+.exchange-rate {
+    font-size: 0.9rem;
+    color: #ecf0f1;
+}
+
+nav {
+    background-color: #34495e;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    overflow-x: auto;
+}
+
+nav li {
+    flex: 1;
+    min-width: 120px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 1rem;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #2c3e50;
+}
+
+nav a.active {
+    background-color: #2980b9;
+    font-weight: bold;
+}
+
+.search-container {
+    padding: 1rem;
+    background-color: #ecf0f1;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+}
+
+.search-container button {
+    padding: 0.5rem 1rem;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #3498db;
+}
+
+main {
+    flex: 1;
+    padding: 1rem;
+    background-color: white;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+/* Estilos para tarjetas de estadísticas */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: #ecf0f1;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.stat-card h3 {
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.stat-card p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Estilos para formularios y controles */
+.section-controls {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    background-color: #2980b9;
+    color: #020202;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #3498db;
+}
+
+button.secondary {
+    background-color: #7f8c8d;
+}
+
+button.secondary:hover {
+    background-color: #95a5a6;
+}
+
+button.danger {
+    background-color: #e74c3c;
+}
+
+button.danger:hover {
+    background-color: #c0392b;
+}
+
+/* Estilos para tablas */
+.table-container {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #34495e;
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #e3e3e3;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Estilos para pestañas */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #e4e5e7;
+    margin-bottom: 1rem;
+}
+
+.tab-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: #ffffff;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover {
+    background-color: #81befb;
+}
+
+.tab-btn.active {
+    background-color: rgb(255, 255, 255);
+    border-bottom-color: #2980b9;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Estilos para modales */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-content.small {
+    width: 400px;
+}
+
+.modal-content.large {
+    width: 800px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.close-btn:hover {
+    color: #34495e;
+}
+
+/* Estilos para el cálculo de material */
+.calc-results {
+    margin: 2rem 0;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #2980b9;
+}
+
+.calc-results h3 {
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+/* Estilos para reportes */
+.report-results {
+    margin-top: 2rem;
+}
+
+#report-chart {
+    height: 300px;
+    margin-bottom: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #7f8c8d;
+}
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    nav ul {
+        flex-wrap: wrap;
+    }
+    
+    nav li {
+        min-width: 100px;
+    }
+    
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+    
+    .modal-content.small {
+        width: 95%;
+    }
+    
+    .modal-content.large {
+        width: 95%;
+    }
+}
+
+/* Estilos para impresión */
+@media print {
+    nav, .search-container, .section-controls, button {
+        display: none !important;
+    }
+    
+    .content-section {
+        display: block !important;
+    }
+    
+    .modal {
+        position: static;
+        display: block !important;
+        background-color: transparent;
+    }
+    
+    .modal-content {
+        box-shadow: none;
+        max-width: 100%;
+        max-height: none;
+    }
+    
+    .close-btn {
+        display: none;
+    }
+}
+
+/* Estilos para la sección de cálculo de material */
+.result-item {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border-left: 4px solid #2980b9;
+}
+
+.result-item h4 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+#measures-list-container {
+    margin-top: 1rem;
+}
+
+#measures-list-container table {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Estilos para la sección de pagos */
+.payment-paid {
+    background-color: #e8f5e9 !important;
+}
+
+.payment-pending {
+    background-color: #ffebee !important;
+}
+
+.payment-status {
+    padding: 0.25rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.payment-status option[value="paid"] {
+    background-color: #e8f5e9;
+}
+
+.payment-status option[value="pending"] {
+    background-color: #ffebee;
+}
+
+/* Estilos para filtros de pagos */
+.payment-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.payment-filters .form-group {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Estilos para la sección de cálculo de material */
+.calc-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.material-measures {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
